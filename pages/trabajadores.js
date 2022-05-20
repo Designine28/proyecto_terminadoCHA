@@ -2,10 +2,59 @@ import Layouts from '../layout/Layout';
 import React, { useState } from 'react';
 import {  Table,Drawer, Form, Button, Col, Row, Input, Select, DatePicker, Space} from 'antd';
 import {  UserAddOutlined } from '@ant-design/icons';
-
+import axios from 'axios';
 import Link from 'next/link';
+import Swal from "sweetalert2";
 
 const FormLayoutDemo = () => {
+  const [dataSource, setItems] = React.useState(null);
+
+  React.useEffect(() => {
+    axios.get("http://164.92.113.213:3005/api/trabajadores").then((result) => {
+      console.table(result.data);
+      setItems(result.data.rows);
+    });
+  }, []);
+
+  const onSubmit = event => {
+    event.preventDefault() // don't redirect the page
+    // where we'll add our form logic
+    let rfc = document.getElementById('rfc').value;
+    let nombre = document.getElementById('nombre').value;
+    let puesto = document.getElementById('puesto').value;
+    let almacen = document.getElementById('local').value;
+    
+    axios.post('http://164.92.113.213:3005/api/trabajadores', {
+      rfc,
+      nombre,
+      puesto,
+      almacen
+  })
+  .then(response => {
+      const {ok} = response.data;
+
+      console.log(ok);
+      if(ok){
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Trabajador guardado con exito",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }else{
+        Swal.fire({
+          position: "center",
+          icon: "warning",
+          title: "Su registro no se ha guardado con exito",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+  });
+  
+
+  }
 const [visible, setVisible] = React.useState(false);
 const showDrawer = () => {
   setVisible(true);
@@ -46,36 +95,25 @@ const state = { visible: false };
       : null;
       const columns = [
         {
+          title: 'RFC',
+          dataIndex: 'rfc',
+          key: 'rfc'
+        },
+        {
           title: 'Nombre',
           dataIndex: 'nombre',
-          key: 'nombre',
-          render: text => <a>{text}</a>,
+          key: 'nombre'
         },
         {
-          title: 'Apellido',
-          dataIndex: 'apellido',
-          key: 'apellido',
+          title: 'Puesto',
+          dataIndex: 'puesto',
+          key: 'puesto',
         },
         {
-          title: 'Usuario',
-          dataIndex: 'usuario',
-          key: 'usuario',
-        },
-        {
-          title: 'Password',
-          dataIndex: 'password',
-          key: 'password',
-        },
-        {
-          title: 'Action',
-          key: 'action',
-          render: (text, record) => (
-            <Space size="middle">
-              <a>Invite {record.name}</a>
-              <a>Delete</a>
-            </Space>
-          ),
-        },
+          title: 'Almacen',
+          dataIndex: 'almacen',
+          key: 'almacen',
+        }
       ];
     return (
       <Layouts>
@@ -114,8 +152,8 @@ const state = { visible: false };
                       bodyStyle={{ paddingBottom: 80 }}
                       extra={
                       <Space>
-                          <Button onClick={onClose}>Cancelar</Button>
-                          <Button onClick={onClose} type="primary">
+ 
+                          <Button type="submit" onClick={onSubmit} htmlType="submit">
                               Agregar
                           </Button>
                       </Space>
@@ -126,12 +164,12 @@ const state = { visible: false };
                           <Col span={12}>
                           <Form.Item
                               name="name"
-                              label="Id"
+                              label="RFC"
                               rules={[{ required: true,
                                 minLength: 5,
                                 required: '^\\([0-9]{2}\\)((3[0-9]{3}-[0-9]{4})|(9[0-9]{3}-[0-9]{5}))$'}]}
                           >
-                              <Input placeholder="Ingrese su id" />
+                              <Input id="rfc" placeholder="Ingrese su rfc" />
                           </Form.Item>
                           </Col>
                           <Col span={12}>
@@ -140,7 +178,7 @@ const state = { visible: false };
                               label="Nombre"
                               rules={[{ required: true, message: 'Please enter url' }]}
                           >
-                              <Input placeholder="Ingrese el nombre" />
+                              <Input id="nombre"placeholder="Ingrese el nombre" />
                           </Form.Item>
                           </Col>
                       </Row>
@@ -151,10 +189,8 @@ const state = { visible: false };
                               label="Puesto"
                               rules={[{ required: true, message: 'Please select an owner' }]}
                           >
-                              <Select placeholder="Seleccione un tipo de puesto">
-                              <Option value="1">Encargado de almacen</Option>
-                              <Option value="2">Vendedor</Option>
-                              </Select>
+                                      <Input id="puesto"placeholder="Ingrese el puesto" />
+
                           </Form.Item>
                           </Col>
                           <Col span={12}>
@@ -163,46 +199,15 @@ const state = { visible: false };
                               label="Local"
                               rules={[{ required: true, message: 'Please choose the type' }]}
                           >
-                              <Select placeholder="Seleccione el local">
-                                <Option value="1">Local 1</Option>
-                                <Option value="2">Local 2</Option>
-                                <Option value="3">Local 3</Option>
-                                <Option value="4">Local 4</Option>
-                                <Option value="5">Local 5</Option>
-                                <Option value="6">Local 6</Option>
-                                <Option value="7">Local 7</Option>
-                              </Select>
+                                      <Input id="local"placeholder="Ingrese el local" />
                           </Form.Item>
                           </Col>
                       </Row>
-                      <Row gutter={16}>
-                          <Col span={12}>
-                          <Form.Item
-                            name="usuario"
-                            label="Usuario"
-                            rules={[{ required: true, message: 'Please choose the approver' }]}
-                          >
-                            <Select placeholder="Elige un tipo de usuario">
-                              <Option value="jack">Administrador</Option>
-                              <Option value="tom">Invitado</Option>
-                            </Select>
-                          </Form.Item>
-                          </Col>
-                          <Col span={12}>
-                          <Form.Item
-                            name="contraseña"
-                            label="Contraseña"
-                            rules={[{ required: true, message: 'Porfavor ingresa tu password' }]}
-                          >
-                            <Input.Password />
-                          </Form.Item>
-                          </Col>
-                      </Row>
+                      
                       </Form>
                   </Drawer>
-             
           <div className='table'>
-          <Table columns={columns} />
+          <Table columns={columns} dataSource={dataSource} />
           </div>
           <Form.Item {...buttonItemLayout}>
             

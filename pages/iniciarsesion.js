@@ -18,7 +18,7 @@ export default function iniciarsesion() {
     let usuario = document.getElementById('email').value;
     let password = document.getElementById('password').value;
     
-    axios.post('http://localhost:3005/api/login', {
+    axios.post('http://164.92.113.213:3005/api/login', {
      
       usuario,
       password,
@@ -39,8 +39,9 @@ export default function iniciarsesion() {
 
         }).then((result) => {
   /* Read more about isConfirmed, isDenied below */
-  if (result.isConfirmed) {
+          if (result.isConfirmed) {
     
+            router.push('/ventas');
   } else if (result.isDenied) {
     
   }
@@ -130,7 +131,7 @@ export default function iniciarsesion() {
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <span className='button'></span>
-        <Button type="button"  href="ventas">
+        <Button type="submit" onClick={onSubmit} htmlType="submit">
           Iniciar
           
         </Button>

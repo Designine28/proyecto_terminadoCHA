@@ -1,14 +1,58 @@
 import Layouts from '../layout/Layout';
-import React, { useState } from 'react';
-import { Form, Input, Button, Cascader, DatePicker } from 'antd';
+import React, { useState, useEffect } from "react";
+import {  Table,Drawer, Form, Button, Col, Row, Input, Select, Space} from 'antd';
+import {  UserAddOutlined } from '@ant-design/icons';
+import Swal from "sweetalert2";
 import Link from 'next/link';
+import axios from 'axios';
+
 
 export default function ventas() {
+  const onSubmit = event => {
+      
+    event.preventDefault() // don't redirect the page
+    // where we'll add our form logic
+    let folio = document.getElementById('folio').value;
+    let precio = document.getElementById('precio').value;
+    let cantidad = document.getElementById('cantidad').value;
 
+    
+    axios.post('http://164.92.113.213:3005/api/ventas', {
+      folio,
+      precio,
+      cantidad,
+      /** */
+  })
+  .then(response => {
+      const {ok} = response.data;
+
+      console.log(ok);
+      if(ok){
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Cliente registrado con exito",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }else{
+        Swal.fire({
+          position: "center",
+          icon: "warning",
+          title: "Su registro no se ha guardado con exito",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+  });
+  
+
+  }
   const [form] = Form.useForm();
   const [formLayout, setFormLayout] = useState('horizontal');
 
   const onFormLayoutChange = ({ layout }) => {
+    
     setFormLayout(layout);
   };
   const formItemLayout =
@@ -47,60 +91,22 @@ export default function ventas() {
           <div className="login">
             <h1>VENTAS</h1>
           </div>
-          <Form.Item label="Id ventas">
-            <Input placeholder="" />
+          
+          <Form.Item label="folio">
+            <Input id="folio" placeholder="" />
           </Form.Item>
-          <Form.Item label="Folio">
-            <Input placeholder="" />
-          </Form.Item>
-          <Form.Item label="Id local">
-            <Cascader
-              options={[
-                {
-                  value: '1',
-                  label: 'Local 1',
-                },
-                {
-                  value: '2',
-                  label: 'Local 2',
-                },
-                {
-                  value: '3',
-                  label: 'Local 3',
-                },
-                {
-                  value: '4',
-                  label: 'Local 4',
-                },
-                {
-                  value: '5',
-                  label: 'Local 5',
-                },
-                {
-                  value: '6',
-                  label: 'Local 6',
-                },
-                {
-                  value: '7',
-                  label: 'Local 7',
-                },
-              ]}  placeholder=""
-            />
-          </Form.Item>
-          <Form.Item label="Codigo barra">
-            <Input placeholder="" />
-          </Form.Item>
+          
+          
+          
           <Form.Item label="Precio">
-            <Input placeholder="" />
+            <Input id="precio" placeholder="" />
           </Form.Item>
           <Form.Item label="Cantidad">
-            <Input placeholder="" />
+            <Input id="cantidad" placeholder="" />
           </Form.Item>
-          <Form.Item label="Fecha">
-            <DatePicker />
-          </Form.Item>
+          
           <Form.Item {...buttonItemLayout}>
-            <Button type="primary">Agregar</Button>
+          <Button type="submit" onClick={onSubmit} htmlType="submit">Guardar</Button>
           </Form.Item>
           <Form.Item {...buttonItemLayout}>
             

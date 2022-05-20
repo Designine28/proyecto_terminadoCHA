@@ -6,10 +6,11 @@ import axios from 'axios';
 import 'antd/dist/antd.css'
 import Swal from "sweetalert2";
 import { Form, Input, Button, Checkbox } from 'antd';
+import Router , {useRouter}  from 'next/router';
 
 
 export default function index() {
-
+const router = useRouter();
   let nombre;
   let apellido;
 
@@ -22,7 +23,7 @@ export default function index() {
     let usuario = document.getElementById('email').value;
     let password = document.getElementById('password').value;
     
-    axios.post('http://localhost:3005/api/usuarios', {
+    axios.post('http://164.92.113.213:3005/api/usuarios', {
       nombre,
       apellidos,
       usuario,
@@ -37,16 +38,24 @@ export default function index() {
           position: "center",
           icon: "success",
           title: "Su registro se ha guardado con exito",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+          showConfirmButton: true,
+          timer: 5000,
+        }).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+    
+            router.push('/iniciarsesion');
+  } else if (result.isDenied) {
+    
+  }
+});
       }else{
         Swal.fire({
           position: "center",
           icon: "warning",
           title: "Su registro no se ha guardado con exito",
           showConfirmButton: false,
-          timer: 1500,
+          timer: 6000,
         });
       }
   });

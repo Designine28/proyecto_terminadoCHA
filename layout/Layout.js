@@ -22,12 +22,12 @@ const Layouts=({children})=> {
               </Menu.Item>
               <Menu.Item key="2" icon={<CloudUploadOutlined />}>
                 <Link href="/altas">
-                  <a>Altas</a>
+                  <a>Alta producto</a>
                 </Link>
               </Menu.Item>
               <Menu.Item key="3" icon={<CloudUploadOutlined />}>
                 <Link href="/bajas">
-                  <a>Bajas</a>
+                  <a>Baja producto</a>
                 </Link>
               </Menu.Item>
               <Menu.Item key="4" icon={<DropboxOutlined />}>
@@ -50,11 +50,7 @@ const Layouts=({children})=> {
                   <a>Clientes</a>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="8" icon={<ShopOutlined />}>
-                <Link href="/locales">
-                  <a>Locales</a>
-                </Link>
-              </Menu.Item>
+              
               
           </Menu>
         </Sider>

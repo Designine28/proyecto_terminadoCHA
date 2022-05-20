@@ -1,11 +1,82 @@
 import Layouts from '../layout/Layout';
-import React, { useState } from 'react';
-import {  Table,Drawer, Form, Button, Col, Row, Input, Select, DatePicker, Space} from 'antd';
+import React, { useState, useEffect } from "react";
+import {  Table,Drawer, Form, Button, Col, Row, Input, Select, Space} from 'antd';
 import {  UserAddOutlined } from '@ant-design/icons';
-
+import Swal from "sweetalert2";
 import Link from 'next/link';
+import axios from 'axios';
+
 
 const FormLayoutDemo = () => {
+  const [dataSource, setItems] = React.useState(null);
+  
+  const columns = [
+    {
+      title: 'Folio',
+      dataIndex: 'folio',
+      key: 'folio',
+    },
+    {
+      title: 'Nombre',
+      dataIndex: 'nombre',
+      key: 'nombre',
+    },
+    {
+      title: 'Descuento',
+      dataIndex: 'descuento',
+      key: 'descuento',
+    },
+  ];
+  
+
+  React.useEffect(() => {
+    axios.get("http://164.92.113.213:3005/api/clientes").then((result) => {
+      console.table(result.data);
+      setItems(result.data.rows);
+    });
+  }, []);
+
+    const onSubmit = event => {
+      
+        event.preventDefault() // don't redirect the page
+        // where we'll add our form logic
+        let folio = document.getElementById('folio').value;
+        let nombre = document.getElementById('nombre').value;
+        let descuento = document.getElementById('descuento').value;
+
+        console.log(data.rows);
+        
+        axios.post('http://164.92.113.213:3005/api/clientes', {
+          nombre,
+          folio,
+          descuento,
+          /** */
+      })
+      .then(response => {
+          const {ok} = response.data;
+    
+          console.log(ok);
+          if(ok){
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Cliente registrado con exito",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }else{
+            Swal.fire({
+              position: "center",
+              icon: "warning",
+              title: "Su registro no se ha guardado con exito",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+      });
+      
+    
+      }
 const [visible, setVisible] = React.useState(false);
 const showDrawer = () => {
   setVisible(true);
@@ -44,39 +115,26 @@ const state = { visible: false };
           },
         }
       : null;
-      const columns = [
+      /*const columns = [
         {
-          title: 'Nombre',
-          dataIndex: 'nombre',
-          key: 'nombre',
+          title: 'Folio',
+          dataIndex: 'folio',
+          key: 'folio',
           render: text => <a>{text}</a>,
         },
         {
-          title: 'Apellido',
-          dataIndex: 'apellido',
-          key: 'apellido',
+          title: 'Nombre',
+          dataIndex: 'Nombre',
+          key: 'Nombre',
         },
         {
-          title: 'Usuario',
-          dataIndex: 'usuario',
-          key: 'usuario',
+          title: 'descuento',
+          dataIndex: 'descuento',
+          key: 'descuento',
         },
-        {
-          title: 'Password',
-          dataIndex: 'password',
-          key: 'password',
-        },
-        {
-          title: 'Action',
-          key: 'action',
-          render: (text, record) => (
-            <Space size="middle">
-              <a>Invite {record.name}</a>
-              <a>Delete</a>
-            </Space>
-          ),
-        },
-      ];
+       
+       
+      ];*/
     return (
       <Layouts>
         <Form
@@ -115,7 +173,8 @@ const state = { visible: false };
                       extra={
                       <Space>
                           <Button onClick={onClose}>Cancelar</Button>
-                          <Button onClick={onClose} type="primary">
+                        <Button type="submit" onClick={onSubmit} htmlType="submit">
+                          
                               Agregar
                           </Button>
                       </Space>
@@ -132,7 +191,7 @@ const state = { visible: false };
                                 required: '^\\([0-9]{2}\\)((3[0-9]{3}-[0-9]{4})|(9[0-9]{3}-[0-9]{5}))$'}]}
                           >
                              
-                              <Input placeholder="Ingrese el nombre" />
+                              <Input  id="nombre" placeholder="Ingrese el nombre" />
                           </Form.Item>
                           </Col>
                       </Row>
@@ -145,7 +204,7 @@ const state = { visible: false };
                           >
                               
                             
-                              <Input placeholder="Ingrese folio" />
+                              <Input id="folio" placeholder="Ingrese folio" />
                          
                         
                               
@@ -158,13 +217,8 @@ const state = { visible: false };
                             name="Descuento"
                             label="Descuentos"
                             rules={[{ required: true, message: 'Please choose the approver' }]}
-                          >
-                           
-                              
-                           <Input placeholder="Ingrese el descuento" />
-                           
-                          
-                           
+                          >                              
+<Input  id="descuento" placeholder="Ingrese el descuento" />
                           </Form.Item>
                           </Col>
                       </Row>
@@ -172,7 +226,9 @@ const state = { visible: false };
                   </Drawer>
              
           <div className='table'>
-          <Table columns={columns} />
+            
+            <Table dataSource={dataSource} columns={columns} />;
+            
           </div>
           <Form.Item {...buttonItemLayout}>
             
