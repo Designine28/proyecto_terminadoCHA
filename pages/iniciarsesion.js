@@ -18,7 +18,7 @@ export default function iniciarsesion() {
     let usuario = document.getElementById('email').value;
     let password = document.getElementById('password').value;
     
-    axios.post('http://164.92.113.213:3005/api/login', {
+    axios.post('http://157.245.247.182:3005/api/login', {
      
       usuario,
       password,
@@ -67,7 +67,7 @@ export default function iniciarsesion() {
         Iniciar sesion
       </h1>
       <div className='centered'>
-
+    
     <Form
     
     onSubmit={onSubmit}

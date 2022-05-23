@@ -23,7 +23,7 @@ const router = useRouter();
     let usuario = document.getElementById('email').value;
     let password = document.getElementById('password').value;
     
-    axios.post('http://164.92.113.213:3005/api/usuarios', {
+    axios.post('http://157.245.247.182:3005/api/usuarios', {
       nombre,
       apellidos,
       usuario,

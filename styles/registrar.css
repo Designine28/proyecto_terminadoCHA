@@ -7,6 +7,8 @@
     
    
   }
+  
+  
   /**centrar forumlario */
   .centered {
         align-items: center;
@@ -15,6 +17,7 @@
         margin-right: 30rem;
         margin-left: 28rem;
         width: 200;
+       
       }
       /**centrar los inputs */
   .input1{

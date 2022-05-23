@@ -17,7 +17,7 @@ export default function ventas() {
     let cantidad = document.getElementById('cantidad').value;
 
     
-    axios.post('http://164.92.113.213:3005/api/ventas', {
+    axios.post('http://157.245.247.182:3005/api/ventas', {
       folio,
       precio,
       cantidad,
@@ -31,7 +31,7 @@ export default function ventas() {
         Swal.fire({
           position: "center",
           icon: "success",
-          title: "Cliente registrado con exito",
+          title: "venta registrada con exito",
           showConfirmButton: false,
           timer: 1500,
         });

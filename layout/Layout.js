@@ -30,28 +30,31 @@ const Layouts=({children})=> {
                   <a>Baja producto</a>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="4" icon={<DropboxOutlined />}>
+              <Menu.Item key="4" icon={<CloudUploadOutlined />}>
+                <Link href="/visualizar">
+                  <a>Visualizar producto</a>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="5" icon={<DropboxOutlined />}>
                 <Link href="/almacenes">
                   <a>Almacenes</a>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="5" icon={<SolutionOutlined />}>
+              <Menu.Item key="6" icon={<SolutionOutlined />}>
                 <Link href="/reportes">
                   <a>Reportes</a>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="6" icon={<UserOutlined />}>
+              <Menu.Item key="7" icon={<UserOutlined />}>
                 <Link href="/trabajadores">
                   <a>Trabajadores</a>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="7" icon={<TeamOutlined />}>
+              <Menu.Item key="8" icon={<TeamOutlined />}>
                 <Link href="/clientes">
                   <a>Clientes</a>
                 </Link>
-              </Menu.Item>
-              
-              
+              </Menu.Item>             
           </Menu>
         </Sider>
         <Layout className="site-layout">{children}</Layout>

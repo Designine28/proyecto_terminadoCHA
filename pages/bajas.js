@@ -13,7 +13,7 @@ const altaprod = () => {
     let nombre = document.getElementById('nombre').value;
     
     
-    axios.delete(`http://164.92.113.213:3005/api/productos/${nombre}`, {
+    axios.delete(`http://157.245.247.182:3005/api/productos/${nombre}`, {
       
   })
   .then(response => {
